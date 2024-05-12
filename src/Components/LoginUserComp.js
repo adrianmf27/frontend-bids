@@ -48,7 +48,7 @@ let LoginUserComp = () => {
     return (
         <div>
             <h2>Login User</h2>
-            {message != "" && <h3 className="errorMessage">{message}</h3>}
+            {message !== "" && <h3 className="errorMessage">{message}</h3>}
 
             <div className="center-box">
                 <div className="form-group">
