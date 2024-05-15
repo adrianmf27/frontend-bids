@@ -6,6 +6,7 @@ import ItemsComp from './Components/ItemsComp';
 import CreateItemComp from './Components/CreateItemComp';
 import MyItemsComp from './Components/MyItemsComp';
 import DetailsItemComp from './Components/DetailsItemComp';
+import EditItemComp from './Components/EditItemComp';
 
 function App() {
   return (
@@ -48,6 +49,10 @@ function App() {
 
         <Route path="/item/:itemId" element={
           <DetailsItemComp/>
+        }/>
+
+        <Route path="/item/edit/:itemId" element={
+          <EditItemComp/>
         }/>
       </Routes>
     </div>
