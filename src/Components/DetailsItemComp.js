@@ -23,7 +23,8 @@ let DetailsItemComp = () => {
         }
         else
         {
-            setMessage("Error obtaining item")
+            let jsonData = await response.json()
+            setMessage(jsonData.error)
         }
     }
 

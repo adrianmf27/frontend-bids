@@ -21,7 +21,8 @@ let ItemsComp = () => {
         }
         else
         {
-            setMessage("Error obtaining items")
+            let jsonData = await response.json()
+            setMessage(jsonData.error)
         }
     }
 

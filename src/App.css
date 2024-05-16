@@ -131,3 +131,7 @@ button:hover {
   margin-left: 10px;
   text-align: left;
 }
+
+.errorForm {
+  color: red;
+}

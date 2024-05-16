@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../Globals";
 import {timestampToString} from "../Utils";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 let EditItemComp = () => {
     let [message, setMessage] = useState("")
     let [item, setItem] = useState({}) 
     let {itemId} = useParams()
 
+    let navigate = useNavigate()
+    
     let changeProperty = (propertyName, e) => {
         let itemNew = {...item, [propertyName] : e.currentTarget.value}
         setItem(itemNew)
@@ -33,6 +35,7 @@ let EditItemComp = () => {
         {
             // eslint-disable-next-line no-unused-vars
             let jsonData = await res.json()
+            navigate("/myItems")
         }
         else
         {
