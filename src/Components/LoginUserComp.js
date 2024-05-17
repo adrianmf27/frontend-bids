@@ -1,10 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // eslint-disable-next-line no-unused-vars
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { backendUrl } from "../Globals";
 import { useNavigate } from "react-router-dom";
 import { emailPattern } from "../Utils";
 
-let LoginUserComp = () => {
+let LoginUserComp = (props) => {
+    let {setLogin} = props
+
     let [email, changeEmail] = useState(null)
     let [message, setMessage] = useState(null)
     let [password, changePassword] = useState("")
@@ -12,7 +15,7 @@ let LoginUserComp = () => {
 
     let navigate = useNavigate()
 
-    useEffect = (() => {
+    useEffect(() => {
         checkInputErrors()
     }, [email, password])
 
@@ -63,6 +66,7 @@ let LoginUserComp = () => {
                 localStorage.setItem("email", jsonData.email)
             }            
 
+            setLogin(true)
             navigate("/myItems")
         }
         else

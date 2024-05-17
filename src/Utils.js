@@ -25,6 +25,6 @@ export let timestampToString = (timestamp) => {
     return result
 }
 
-export const emailPattern = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,10}$/"
+export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export const _ = require('lodash');

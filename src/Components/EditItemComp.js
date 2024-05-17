@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { backendUrl } from "../Globals";
 import {timestampToString} from "../Utils";
 import { useNavigate, useParams } from "react-router-dom";
 
-let EditItemComp = () => {
+let EditItemComp = (props) => {
+    let {createNotification} = props
+    
     let [message, setMessage] = useState("")
     let [item, setItem] = useState({}) 
     let {itemId} = useParams()
@@ -35,6 +38,7 @@ let EditItemComp = () => {
         {
             // eslint-disable-next-line no-unused-vars
             let jsonData = await res.json()
+            createNotification("Item succesfully edited")
             navigate("/myItems")
         }
         else

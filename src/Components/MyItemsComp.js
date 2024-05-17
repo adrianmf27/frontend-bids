@@ -4,7 +4,9 @@ import {timestampToDate} from "../Utils";
 import { useNavigate } from "react-router-dom";
 
 
-let MyItemsComp = () => {
+let MyItemsComp = (props) => {
+    let {createNotification} = props
+
     let [items, setItems] = useState([])
     let [message, setMessage] = useState("")
 
@@ -36,6 +38,7 @@ let MyItemsComp = () => {
         if(response.ok){
             let updatedItems = items.filter(item => item.id !== id)
             setItems(updatedItems)
+            createNotification("Item succesfully deleted")
         }
         else
         {

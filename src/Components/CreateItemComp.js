@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 
 
-let CreateItemComp = () => {
+let CreateItemComp = (props) => {
+    let {createNotification} = props
+
     let [message, setMessage] = useState("")
     let [item, setItem] = useState({})
     let [error, setError] = useState({})
@@ -66,6 +68,7 @@ let CreateItemComp = () => {
             {
                 // eslint-disable-next-line no-unused-vars
                 let jsonData = await res.json()
+                createNotification("Items created succesfully")
                 navigate("/myItems")
             }
             else
