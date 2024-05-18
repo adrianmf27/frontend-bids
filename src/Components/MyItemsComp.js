@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../Globals";
 import {timestampToDate} from "../Utils";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 let MyItemsComp = (props) => {
@@ -59,15 +59,17 @@ let MyItemsComp = (props) => {
             <div className="item-list">
                 { items.map (item => 
                     (
-                        <div className="item">
-                            <h3 className="title">{item.name}</h3>
-                            <h3 className="description">Description: {item.description}</h3>
-                            <h3 className="email">Seller: {item.email}</h3>
-                            <h3 className="date">Time start: {timestampToDate(item.dateStart)}</h3>
-                            <h3 className="date">Time finish {timestampToDate(item.dateFinish)}</h3>
-                            <button onClick={() => {onClickDeleteItem(item.id)}}>Delete Item</button>
-                            <button onClick={() => {onClickEditItem(item.id)}}>Edit Item</button>
-                        </div>                        
+                        <Link to={"/item/" + item.id} key={item.id}>
+                           <div className="item">
+                                <h3 className="title">{item.name}</h3>
+                                <h3 className="description">Description: {item.description}</h3>
+                                <h3 className="email">Seller: {item.email}</h3>
+                                <h3 className="date">Time start: {timestampToDate(item.dateStart)}</h3>
+                                <h3 className="date">Time finish {timestampToDate(item.dateFinish)}</h3>
+                                <button onClick={() => {onClickDeleteItem(item.id)}}>Delete Item</button>
+                                <button onClick={() => {onClickEditItem(item.id)}}>Edit Item</button>
+                            </div>      
+                        </Link>                                          
                     )
                 )}
             </div>

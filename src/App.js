@@ -11,6 +11,7 @@ import DetailsItemComp from './Components/DetailsItemComp';
 import EditItemComp from './Components/EditItemComp';
 import React, { useEffect, useState } from 'react';
 import { backendUrl } from './Globals';
+import ListBidsComp from './Components/ListBidsComp';
 
 function App() {
   let [notif, setNotif] = useState("")
@@ -64,8 +65,9 @@ function App() {
         <Route path="/items" element={<ItemsComp/>}/>
         <Route path="/createItem" element={<CreateItemComp createNotification={createNotif}/>}/>
         <Route path="/myItems" element={<MyItemsComp createNotification={createNotif}/>}/>
-        <Route path="/item/:itemId" element={<DetailsItemComp/>}/>
+        <Route path="/item/:itemId" element={<DetailsItemComp createNotification={createNotif}/>}/>
         <Route path="/item/edit/:itemId" element={<EditItemComp createNotification={createNotif}/>}/>
+        <Route path="/item/:itemId/bids" element={<ListBidsComp createNotification={createNotif}/>}/>
       </Routes>
     </div>
   );
