@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState} from "react";
 import { backendUrl } from "../Globals";
 import { timestampToDate } from "../Utils";
 import { Link, useNavigate } from "react-router-dom";
+import { Card, List } from "antd";
 
 const ItemsComp = () => {
     const [items, setItems] = useState([]);
@@ -33,24 +34,33 @@ const ItemsComp = () => {
     
 
     return (
-        <div>
-            <h2>Items</h2>
+        <>
+            <Card style={{textAlign: "center", fontSize: "30px", fontWeight: "bold"}}>Items</Card>
             {message !== "" && <h3 className="errorMessage">{message}</h3>}
 
-            <div className="item-list">
-                {items.map(item => (
-                    <Link to={"/item/" + item.id} key={item.id}>
-                        <div className="item">
-                            <h3 className="title">{item.name}</h3>
-                            <h3 className="description">Description: {item.description}</h3>
-                            <h3 className="email">Seller: {item.email}</h3>
-                            <h3 className="date">Time start: {timestampToDate(item.dateStart)}</h3>
-                            <h3 className="date">Time finish: {timestampToDate(item.dateFinish)}</h3>
-                        </div>
-                    </Link>
-                ))}
-            </div>
-        </div>
+            <List grid={ {
+                    gutter: 16, // margin
+                    xs: 1, 
+                    sm:2, 
+                    md: 4, 
+                    lg:4,
+                    xl: 6,
+                    xxl: 6
+                }} 
+                dataSource={items} renderItem={(item) => (
+                <List.Item>
+                    <Card hoverable title={item.name} style={{height: "300px"}}>
+                        <Link to={"/item/" + item.id}>
+                            <p className="description">Description: {item.description}</p>
+                            <p className="email">Seller: {item.email}</p>
+                            <p className="date">Time start: {timestampToDate(item.dateStart)}</p>
+                            <p className="date">Time finish: {timestampToDate(item.dateFinish)}</p>
+                        </Link>                        
+                    </Card>
+                </List.Item>)}>
+
+            </List>
+        </>
     );
 }
 

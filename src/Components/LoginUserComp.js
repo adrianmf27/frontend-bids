@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { backendUrl } from "../Globals";
 import { useNavigate } from "react-router-dom";
 import { emailPattern } from "../Utils";
+import { Button, Card, Col, Input, Row } from "antd";
 
 let LoginUserComp = (props) => {
     let {setLogin} = props
@@ -77,22 +78,17 @@ let LoginUserComp = (props) => {
     }
 
     return (
-        <div>
-            <h2>Login User</h2>
-            {message !== "" && <h3 className="errorMessage">{message}</h3>}
-
-            <div className="center-box">
-                <div className="form-group">
-                    <input type="text" placeholder="enter your email" onChange={changeName}></input>
-                </div>
-                {error.email && <p className="errorForm">{error.email}</p>}
-                <div className="form-group">
-                    <input type="text" placeholder="enter your password" onChange={changePass}></input>
-                </div>
-                {error.password && <p className="errorForm">{error.password}</p>}
-                <button onClick={clickLoginButton}>Log In</button>
-            </div>
-        </div>
+        <Row align='middle'justify='center' style={{minHeight: "70vh"}}>
+            <Col>
+                <Card title='Login' style={{minWidth: '300px', maxWidth: '500px'}}>
+                    <Input style={{marginBottom: "10px"}} size="large" type="text" 
+                            placeholder="email" onChange={changeName}/>
+                    <Input style={{marginBottom: "10px"}} size="large" type="text" 
+                            placeholder="password" onChange={changePass}/>
+                    <Button type="primary" onClick={clickLoginButton} block>Login</Button>
+                </Card>
+            </Col>
+        </Row>        
     )
 }
 

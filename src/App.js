@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react/jsx-no-comment-textnodes */
-import './App.css';
+import 'antd/dist/reset.css'
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import CreateUserComp from './Components/CreateUserComp';
 import LoginUserComp from './Components/LoginUserComp';
@@ -12,6 +12,8 @@ import EditItemComp from './Components/EditItemComp';
 import React, { useEffect, useState } from 'react';
 import { backendUrl } from './Globals';
 import ListBidsComp from './Components/ListBidsComp';
+import { Layout, Menu } from 'antd';
+import { Content, Footer, Header } from 'antd/es/layout/layout';
 
 function App() {
   let [notif, setNotif] = useState("")
@@ -38,38 +40,39 @@ function App() {
   }
 
   return (
-    <div className="main-container">
-      <nav>
-        <ul className='navbar'>
-          <li><Link to="/">Index</Link></li>
-          {!login && <li><Link to="/register">Register</Link></li>}
-          {!login && <li><Link to="/login">Log In</Link></li>}
-          {login && <li><Link to="/items">Items</Link></li>}    
-          {login && <li><Link to="/createItem">Create Item</Link></li>}
-          {login && <li><Link to="/myItems">My Items</Link></li>}   
-          {login && <li><Link to="#" onClick={disconnect}>Disconnect</Link></li>}  
-        </ul>
-      </nav>
+    <Layout className='layout' style={{minHeight: '100vh'}}>
+      <Header>
+        {!login && (
+          <Menu mode='horizontal' theme='dark' items={[
+            {key: "menuRegister", label: <Link to="/register">Register</Link>},
+            {key: "menuLogin", label: <Link to="/login">Log In</Link>}
+          ]}></Menu>)}
 
-      {notif != "" && (
-        <div className='notification'>
-          {notif}
-          <span className='close-btn' onClick={() => {setNotif("")}}>X</span>
-        </div>
-      )}
-      
-      <Routes>
-        <Route path="/register" element={<CreateUserComp createNotification={createNotif}/>}/>
-        <Route path="/login" element={<LoginUserComp setLogin={setLogin}/>}/>
-        <Route path="/" element={<p>Index of website</p>}/>
-        <Route path="/items" element={<ItemsComp/>}/>
-        <Route path="/createItem" element={<CreateItemComp createNotification={createNotif}/>}/>
-        <Route path="/myItems" element={<MyItemsComp createNotification={createNotif}/>}/>
-        <Route path="/item/:itemId" element={<DetailsItemComp createNotification={createNotif}/>}/>
-        <Route path="/item/edit/:itemId" element={<EditItemComp createNotification={createNotif}/>}/>
-        <Route path="/item/:itemId/bids" element={<ListBidsComp createNotification={createNotif}/>}/>
-      </Routes>
-    </div>
+        {login && (
+        <Menu mode='horizontal' theme='dark' items= {[
+          {key: "menuItems", label: <Link to="/items">Items</Link>},
+          {key: "menuMyItems", label: <Link to="/myItems">My Items</Link>},
+          {key: "menuCreateItem", label: <Link to="/createItem">Create Item</Link>},          
+          {key: "menuDisconnect", label: <Link to="#" onClick={disconnect}>Disconnect</Link>}]}>
+        </Menu>)}
+      </Header>
+
+      <Content>
+        <Routes>
+          <Route path="/register" element={<CreateUserComp createNotification={createNotif}/>}/>
+          <Route path="/login" element={<LoginUserComp setLogin={setLogin}/>}/>
+          <Route path="/" element={<p>Index of website</p>}/>
+          <Route path="/items" element={<ItemsComp/>}/>
+          <Route path="/createItem" element={<CreateItemComp createNotification={createNotif}/>}/>
+          <Route path="/myItems" element={<MyItemsComp createNotification={createNotif}/>}/>
+          <Route path="/item/:itemId" element={<DetailsItemComp createNotification={createNotif}/>}/>
+          <Route path="/item/edit/:itemId" element={<EditItemComp createNotification={createNotif}/>}/>
+          <Route path="/item/:itemId/bids" element={<ListBidsComp createNotification={createNotif}/>}/>
+        </Routes>
+      </Content>
+
+      <Footer style={{textAlign: 'center'}}> My website </Footer>
+    </Layout>
   );
 }
 

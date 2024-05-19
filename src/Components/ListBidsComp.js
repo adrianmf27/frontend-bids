@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { backendUrl } from "../Globals";
 import { timestampToDate } from "../Utils";
+import { List } from "antd";
 
 
 let ListBidsComp = () =>{
@@ -25,19 +26,21 @@ let ListBidsComp = () =>{
     }
 
     return (
-        <div className="item-list">
-            <h2>Bids</h2>
-            <div className="items-container">
-                {bids.map((bid, index) => (
-                    <div className="item" key={index}>
-                        <h3>Amount: {bid.amount} €</h3>
-                        <h3>Email: {bid.email}</h3>
-                        <h3>Date: {timestampToDate(bid.date)}</h3>
-                    </div>
-                ))}
-            </div>
-        </div>
+        <List
+            size="large" 
+            header={<h2>List of bids</h2>} 
+            bordered
+            dataSource={bids} 
+            renderItem={(bid) => (
+                <List.Item>
+                    <h3>{bid.amount} €</h3>
+                    <p>{bid.email}</p>
+                    <p>{timestampToDate(bid.date)}</p>
+                </List.Item>
+            )}
+        />
     );
+    
     
 }
 
