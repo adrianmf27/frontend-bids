@@ -12,11 +12,11 @@ import EditItemComp from './Components/EditItemComp';
 import React, { useEffect, useState } from 'react';
 import { backendUrl } from './Globals';
 import ListBidsComp from './Components/ListBidsComp';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, message, notification } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 
 function App() {
-  let [notif, setNotif] = useState("")
+  let [api, contextHolder] = notification.useNotification() // always like this with these names
   let [login, setLogin] = useState(false)
 
   let navigate = useNavigate()
@@ -27,9 +27,12 @@ function App() {
     }
   }, [])  
 
-  let createNotif = (msg) => {
-    setNotif(msg)
-    setTimeout(() => {setNotif("")}, 3000)
+  let createNotif = (type = "info", msg, placement = "top") => {
+      api[type]({
+        message: msg,
+        description: msg,
+        placement
+      })
   }
 
   let disconnect = async () => {
@@ -40,39 +43,43 @@ function App() {
   }
 
   return (
-    <Layout className='layout' style={{minHeight: '100vh'}}>
-      <Header>
-        {!login && (
-          <Menu mode='horizontal' theme='dark' items={[
-            {key: "menuRegister", label: <Link to="/register">Register</Link>},
-            {key: "menuLogin", label: <Link to="/login">Log In</Link>}
-          ]}></Menu>)}
+    <>
+      {contextHolder}
 
-        {login && (
-        <Menu mode='horizontal' theme='dark' items= {[
-          {key: "menuItems", label: <Link to="/items">Items</Link>},
-          {key: "menuMyItems", label: <Link to="/myItems">My Items</Link>},
-          {key: "menuCreateItem", label: <Link to="/createItem">Create Item</Link>},          
-          {key: "menuDisconnect", label: <Link to="#" onClick={disconnect}>Disconnect</Link>}]}>
-        </Menu>)}
-      </Header>
+      <Layout className='layout' style={{minHeight: '100vh'}}>
+        <Header>
+          {!login && (
+            <Menu mode='horizontal' theme='dark' items={[
+              {key: "menuRegister", label: <Link to="/register">Register</Link>},
+              {key: "menuLogin", label: <Link to="/login">Log In</Link>}
+            ]}></Menu>)}
 
-      <Content>
-        <Routes>
-          <Route path="/register" element={<CreateUserComp createNotification={createNotif}/>}/>
-          <Route path="/login" element={<LoginUserComp setLogin={setLogin}/>}/>
-          <Route path="/" element={<p>Index of website</p>}/>
-          <Route path="/items" element={<ItemsComp/>}/>
-          <Route path="/createItem" element={<CreateItemComp createNotification={createNotif}/>}/>
-          <Route path="/myItems" element={<MyItemsComp createNotification={createNotif}/>}/>
-          <Route path="/item/:itemId" element={<DetailsItemComp createNotification={createNotif}/>}/>
-          <Route path="/item/edit/:itemId" element={<EditItemComp createNotification={createNotif}/>}/>
-          <Route path="/item/:itemId/bids" element={<ListBidsComp createNotification={createNotif}/>}/>
-        </Routes>
-      </Content>
+          {login && (
+          <Menu mode='horizontal' theme='dark' items= {[
+            {key: "menuItems", label: <Link to="/items">Items</Link>},
+            {key: "menuMyItems", label: <Link to="/myItems">My Items</Link>},
+            {key: "menuCreateItem", label: <Link to="/createItem">Create Item</Link>},          
+            {key: "menuDisconnect", label: <Link to="#" onClick={disconnect}>Disconnect</Link>}]}>
+          </Menu>)}
+        </Header>
 
-      <Footer style={{textAlign: 'center'}}> My website </Footer>
-    </Layout>
+        <Content style={{padding: "20px 50px"}}>
+          <Routes>
+            <Route path="/register" element={<CreateUserComp createNotification={createNotif}/>}/>
+            <Route path="/login" element={<LoginUserComp setLogin={setLogin}/>}/>
+            <Route path="/" element={<p>Index of website</p>}/>
+            <Route path="/items" element={<ItemsComp/>}/>
+            <Route path="/createItem" element={<CreateItemComp createNotification={createNotif}/>}/>
+            <Route path="/myItems" element={<MyItemsComp createNotification={createNotif}/>}/>
+            <Route path="/item/:itemId" element={<DetailsItemComp createNotification={createNotif}/>}/>
+            <Route path="/item/edit/:itemId" element={<EditItemComp createNotification={createNotif}/>}/>
+            <Route path="/item/:itemId/bids" element={<ListBidsComp createNotification={createNotif}/>}/>
+          </Routes>
+        </Content>
+
+        <Footer style={{textAlign: 'center'}}> My website </Footer>
+      </Layout>
+    </>
   );
 }
 

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { backendUrl } from "../Globals";
 import {timestampToDate} from "../Utils";
 import { Link, useNavigate } from "react-router-dom";
-
+import { Table, Button } from "antd";
+import { render } from "@testing-library/react";
 
 let MyItemsComp = (props) => {
     let {createNotification} = props
@@ -38,7 +39,7 @@ let MyItemsComp = (props) => {
         if(response.ok){
             let updatedItems = items.filter(item => item.id !== id)
             setItems(updatedItems)
-            createNotification("Item succesfully deleted")
+            createNotification("success", "Item deleted")
         }
         else
         {
@@ -51,28 +52,55 @@ let MyItemsComp = (props) => {
         navigate("/item/edit/" + id)
     }
 
+    let columns = [
+        {
+            title: "Item name",
+            dataIndex: "name"
+        },
+        {
+            title: "Seller",
+            dataIndex: "email"
+        },
+        {
+            title: "Item description",
+            dataIndex: "description"
+        },        
+        {
+            title: "price",
+            dataIndex: "initialPrice"
+        },
+        {
+            title: "Start date",
+            dataIndex: "formatDateStart"
+        }, 
+        {
+            title: "Finish date",
+            dataIndex: "formatDateFinish"
+        },
+        {
+            title: "Delete",
+            dataIndex: "id",
+            render: (id) => <Button onClick={() => {onClickDeleteItem(id)}}>Delete</Button>
+        },
+        {
+            title: "Edit",
+            dataIndex: "id",
+            render: (id) => <Button onClick={() => {onClickEditItem(id)}}>Edit</Button>
+        }
+        
+    ]
+
+    items.map((item) => {
+        item.formatDateStart = timestampToDate(item.dateStart)
+        item.formatDateFinish = timestampToDate(item.dateFinish)
+        return item
+    })
+
     return (
         <div>
             <h2>Items</h2>
             {message !== "" && <h3 className="errorMessage">{message}</h3>}
-
-            <div className="item-list">
-                { items.map (item => 
-                    (
-                        <Link to={"/item/" + item.id} key={item.id}>
-                           <div className="item">
-                                <h3 className="title">{item.name}</h3>
-                                <h3 className="description">Description: {item.description}</h3>
-                                <h3 className="email">Seller: {item.email}</h3>
-                                <h3 className="date">Time start: {timestampToDate(item.dateStart)}</h3>
-                                <h3 className="date">Time finish {timestampToDate(item.dateFinish)}</h3>
-                                <button onClick={() => {onClickDeleteItem(item.id)}}>Delete Item</button>
-                                <button onClick={() => {onClickEditItem(item.id)}}>Edit Item</button>
-                            </div>      
-                        </Link>                                          
-                    )
-                )}
-            </div>
+            <Table columns={columns} dataSource={items}/>
         </div>
     )
 }

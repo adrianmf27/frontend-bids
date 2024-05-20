@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { backendUrl } from "../Globals";
 import {timestampToDate} from "../Utils";
 import { Link, useParams } from "react-router-dom";
+import { Button, Col, Descriptions, Input, Row } from "antd";
 
 let DetailsItemComp = (props) => {
     let {createNotification} = props
@@ -82,7 +83,7 @@ let DetailsItemComp = (props) => {
         if(response.ok)
         {
             await response.json()
-            createNotification("New bid added")
+            createNotification("success", "Bid added")
             getHighestBid()
         }
         else 
@@ -94,29 +95,24 @@ let DetailsItemComp = (props) => {
 
     return (
         <div>
-            <h2>Items</h2>
-            {message !== "" && <h3 className="errorMessage">{message}</h3>}
-
-            <div className="item-list">                
-                <div className="item">
-                    <h3 className="title">{item.name}</h3>
-                    <h3 className="description">Description: {item.description}</h3>
-                    <h3 className="price">Price: {item.initialPrice} €</h3>
-                    <h3 className="email">Seller: {item.email}</h3>
-                    <h3 className="email">Highest Bid: {highestBid}</h3>
-                    <h3 className="date">Time start: {timestampToDate(item.dateStart)}</h3>
-                    <h3 className="date">Time finish {timestampToDate(item.dateFinish)}</h3>
-
-                    <h3>New bid for this item</h3>
-                    <div className="form-group">
-                        <input type="number" placeholder="Bid" onChange={onChangeBid}></input>
-                    </div>
-                    <button onClick={clickBidButton}>Send bid</button>
-
-                    <Link to={"/item/" + item.id + "/bids"}>See all bids</Link>
-                </div>                        
-            </div>
-
+            <Descriptions title={item.name} layer="vertical">
+                <Descriptions.Item label="name">{item.name}</Descriptions.Item>
+                <Descriptions.Item label="Description" span={3}>{item.description}</Descriptions.Item>
+                <Descriptions.Item label="price">{item.initialPrice} €</Descriptions.Item>
+                <Descriptions.Item label="email">{item.email}</Descriptions.Item>
+                <Descriptions.Item label="highestBid">
+                    {item.highestBid}
+                    <Link to={"/item/" + item.id + "/bids"}>See all bids</Link></Descriptions.Item>
+            
+                <Descriptions.Item span={3}>
+                    <Row justify="center" style={{width: "100%"}}>
+                        <Col>
+                            <Input style={{marginBottom: "10px"}} size="large" type="number" placeholder="Bid" onChange={onChangeBid}></Input>
+                            <Button block type="primary" onClick={clickBidButton}>Send bid</Button>
+                        </Col>
+                    </Row>
+                </Descriptions.Item>
+            </Descriptions>           
         </div>
     )
 }

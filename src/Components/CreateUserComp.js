@@ -1,16 +1,18 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useState } from "react";
 import { backendUrl } from "../Globals";
 import { useNavigate } from "react-router-dom";
 import { emailPattern } from "../Utils";
+import { Button, Card, Col, Input, Row, Typography, Alert} from "antd";
 
 let CreateUserComp = (props) => {
     let {createNotification} = props
 
     let [email, changeEmail] = useState(null)
-    let [message, setMessage] = useState(null)
-    let [password, changePassword] = useState("")
+    let [message, setMessage] = useState("")
+    let [password, changePassword] = useState(null)
     let [error, setError] = useState({})
 
     let navigate = useNavigate()
@@ -23,14 +25,16 @@ let CreateUserComp = (props) => {
         let updatedErrors = {}
 
         // eslint-disable-next-line eqeqeq
-        if(email == "" || email?.length < 3 || !emailPattern.test(email)){
+        if(email == "" || email?.length < 3 || (email != null && !emailPattern.test(email))){
             updatedErrors.email = "Incorrect email format"
         }
 
         // eslint-disable-next-line eqeqeq
-        if(password == "" || password?.length < 5){
-            updatedErrors.password = "Incorrect password, maybe too short"
-        }
+        if(password != null){
+            if(password == "" || password?.length < 5){
+                updatedErrors.password = "Incorrect password, maybe too short"
+            }
+        }     
 
         setError(updatedErrors)
     }
@@ -59,7 +63,7 @@ let CreateUserComp = (props) => {
         {
             // eslint-disable-next-line no-unused-vars
             let jsonData = await res.json()
-            createNotification("User created succesfully")
+            createNotification("success", "User created")
             navigate("/login")
         }
         else
@@ -80,22 +84,26 @@ let CreateUserComp = (props) => {
         }
     }
 
+    let {Text} = Typography
+
     return (
-        <div>
-            <h2>Register User</h2>
-            <h3>{message}</h3>
-            <div className="cener-box">
-                <div className="form-group">
-                    <input type="text" placeholder="enter your email" onChange={changeName}></input>
-                </div>
-                {error.email && <p className="errorForm">{error.email}</p>}
-                <div className="form-group">
-                    <input type="text" placeholder="enter your password" onChange={changePass}></input>
-                </div>
-                {error.password && <p className="errorForm">{error.password}</p>}
-                <button onClick={clickCreate}>Create account</button>
-            </div>
-        </div>
+        <Row align='middle'justify='center' style={{minHeight: "70vh"}}>
+            {message != "" && <Alert type="error" message={ message }/>}
+            
+            <Col>
+                <Card title='Register' style={{minWidth: '300px', maxWidth: '500px'}}>
+                    <Input size="large" type="text" 
+                            placeholder="email" onChange={changeName}/>
+                    {error.email && <Text type="danger">{error.email}</Text>}
+                    <Input style={{marginTop: "10px"}} size="large" type="text" 
+                            placeholder="password" onChange={changePass}/>
+                    {error.password && <Text type="danger">{error.password}</Text>}
+                    
+                    <Button style={{marginTop: "10px"}} type="primary" 
+                        onClick={clickCreate} block>Register</Button>
+                </Card>
+            </Col>
+        </Row>       
     )
 }
 

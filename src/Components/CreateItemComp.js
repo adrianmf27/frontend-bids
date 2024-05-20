@@ -1,8 +1,9 @@
+/* eslint-disable eqeqeq */
 import { useEffect, useState } from "react";
 import { backendUrl } from "../Globals";
 import { useNavigate } from "react-router-dom";
 import _ from "lodash";
-
+import { Alert, Button, Card, Col, Input, Row, Typography } from "antd";
 
 let CreateItemComp = (props) => {
     let {createNotification} = props
@@ -68,7 +69,7 @@ let CreateItemComp = (props) => {
             {
                 // eslint-disable-next-line no-unused-vars
                 let jsonData = await res.json()
-                createNotification("Items created succesfully")
+                createNotification("success", "Item created")
                 navigate("/myItems")
             }
             else
@@ -83,36 +84,35 @@ let CreateItemComp = (props) => {
         }
     }
 
-    return (
-        <div>
-            <h2>Create Item</h2>
-            {message !== "" && <h3 className="errorMessage">{message}</h3>}
+    let {Text} = Typography
 
-            <div className = "center-box">
-                <div className="form-group">
-                    <input type="text" placeholder="name" 
-                        onChange={e => changeProperty("name", e)}></input>
-                </div>
-                {error.name && <p className="errorForm">{error.name}</p>}
-                <div className="form-group">
-                    <input type="text" placeholder="description" 
-                        onChange={e => changeProperty("description", e)}></input>
-                </div>
-                {error.description && <p className="errorForm">{error.description}</p>}
-                <div className="form-group">
-                    <input type="number" placeholder="price" 
-                        onChange={e => changeProperty("initialPrice", e)}></input>
-                </div>
-                {error.initialPrice && <p className="errorForm">{error.initialPrice}</p>}
-                <div className="form-group">
-                    <input type="datetime-local" placeholder="date finish"
-                        onChange={changeDate}></input>
-                </div>
-                {error.dateFinish && <p className="errorForm">{error.dateFinish}</p>}
-                <button onClick={clickCreate}>Create item</button>
-            </div>
+    return (
+        <Row align='middle' justify='center' style={{minHeight: "70vh"}}>
+            {message != "" && <Alert type="error" message={ message }/>}
             
-        </div>
+            <Col>
+                <Card title='Register' style={{minWidth: '300px', maxWidth: '500px'}}>
+                    <Input size="large" type="text" 
+                            placeholder="name" onChange={e => changeProperty("name", e)}/>
+                    {error.email && <Text type="danger">{error.name}</Text>}
+
+                    <Input style={{marginTop: "10px"}} size="large" type="text" 
+                            placeholder="description" onChange={e => changeProperty("description", e)}/>
+                    {error.description && <Text type="danger">{error.description}</Text>}
+
+                    <Input style={{marginTop: "10px"}} size="large" type="number" 
+                            placeholder="price" onChange={e => changeProperty("initialPrice", e)}/>
+                    {error.initialPrice && <Text type="danger">{error.initialPrice}</Text>}
+
+                    <Input style={{marginTop: "10px"}} size="large" 
+                            type="datetime-local" onChange={changeDate}/>
+                    {error.dateFinish && <Text type="danger">{error.dateFinish}</Text>}
+
+                    <Button style={{marginTop: "10px"}} type="primary" onClick={clickCreate} 
+                        block>Create item</Button>
+                </Card>
+            </Col>
+        </Row>     
     )
 }
 

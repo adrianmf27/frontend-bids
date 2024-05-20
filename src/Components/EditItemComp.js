@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { backendUrl } from "../Globals";
-import {timestampToString} from "../Utils";
+import { Alert, Button, Card, Col, Input, Row } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 
 let EditItemComp = (props) => {
@@ -38,7 +38,7 @@ let EditItemComp = (props) => {
         {
             // eslint-disable-next-line no-unused-vars
             let jsonData = await res.json()
-            createNotification("Item succesfully edited")
+            createNotification("success", "Item edited")
             navigate("/myItems")
         }
         else
@@ -68,33 +68,28 @@ let EditItemComp = (props) => {
     }
 
     return (
-        <div>
-            <h2>Edit item</h2>
-            {message !== "" && <h3 className="errorMessage">{message}</h3>}
-            <div className="center-box">
-                <div className="form-group">
-                    <input type="text" placeholder="name" value={item.name}
-                        onChange={e => changeProperty("name", e)}></input>
-                </div>
+        <Row align='middle' justify='center' style={{minHeight: "70vh"}}>
+            {message != "" && <Alert type="error" message={ message }/>}
+            
+            <Col>
+                <Card title='Register' style={{minWidth: '300px', maxWidth: '500px'}}>
+                    <Input size="large" type="text" 
+                            placeholder="name" onChange={e => changeProperty("name", e)}/>
 
-                <div className="form-group">
-                    <input type="text" placeholder="description" value={item.description}
-                        onChange={e => changeProperty("description", e)}></input>
-                </div>
+                    <Input style={{marginTop: "10px"}} size="large" type="text" 
+                            placeholder="description" onChange={e => changeProperty("description", e)}/>
 
-                <div className="form-group">
-                    <input type="text" placeholder="price" value={item.initialPrice}
-                        onChange={e => changeProperty("initialPrice", e)}></input>
-                </div>
+                    <Input style={{marginTop: "10px"}} size="large" type="number" 
+                            placeholder="price" onChange={e => changeProperty("initialPrice", e)}/>
 
-                <div className="form-group">
-                    <input type="datetime-local" placeholder="date finish" 
-                        value={timestampToString(item.dateFinish)} onChange={e => changeDate(e)}></input>
-                </div>
+                    <Input style={{marginTop: "10px"}} size="large" 
+                            type="datetime-local" onChange={changeDate}/>
 
-                <button onClick={clickEdit}>Confirm item edition</button>
-            </div>
-        </div>
+                    <Button style={{marginTop: "10px"}} type="primary" 
+                        onClick={clickEdit} block>Confirm item edition</Button>
+                </Card>
+            </Col>
+        </Row>     
     )
 }
 
